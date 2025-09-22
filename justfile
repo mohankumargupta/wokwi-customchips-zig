@@ -7,5 +7,8 @@ set windows-shell := ["powershell", "-c"]
 compile:
     zig build-lib chip.zig -target wasm32-freestanding 
 
+final:
+    zig build-exe chip.zig -target wasm32-wasi -fno-entry --export-table -O ReleaseSmall
+
 
 
