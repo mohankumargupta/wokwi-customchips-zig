@@ -5,7 +5,7 @@ set windows-shell := ["powershell", "-c"]
 #     @just --list
 
 compile:
-    zig build -Drelease-small
+    zig build-lib chip.zig -target wasm32-freestanding 
 
 
 
