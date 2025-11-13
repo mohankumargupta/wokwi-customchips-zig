@@ -1,0 +1,20 @@
+const std = @import("std");
+
+pub fn build(b: *std.Build) void {
+    const target = b.standardTargetOptions(.{});
+    const optimize = b.standardOptimizeOption(.{});
+
+    const exe = b.addExecutable(.{
+        .name = "chip",
+        .root_source_file = .{ .path = "chip.zig" },
+        .target = target,
+        .optimize = optimize,
+    });
+
+    exe.entry = .disabled;          // same as -fno-entry
+    exe.rdynamic = true;            // <── export all public symbols
+    exe.wasm_export_memory = true;  // to get (export "memory")
+    exe.wasm_export_table = true;   // to get (export "__indirect_function_table")
+
+    b.installArtifact(exe);
+}
