@@ -4,11 +4,12 @@ set windows-shell := ["powershell", "-c"]
 # _main:
 #     @just --list
 
-compile:
-    zig build-lib chip.zig -target wasm32-freestanding 
-
 final:
     zig build-exe chip.zig -target wasm32-wasi -fno-entry --export-table -O ReleaseSmall
+
+compile:
+    zig build-lib chip.zig -target wasm32-wasi -fno-entry --export-table -O ReleaseSmall
+
 
 
 

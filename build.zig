@@ -1,23 +1,24 @@
 const std = @import("std");
 
 pub fn build(b: *std.Build) void {
-    //b.prominent_compile_errors = true;
-    //const mode = b.standardReleaseOptions();
-    //const target = b.standardTargetOptions(.{});
-    //b.release_mode = .safe;
-    //const target: std.zig.CrossTarget = .{ .cpu_arch = .wasm32, .os_tag = .freestanding };
+    // This is the equivalent of clang's `--target=wasm32-unknown-wasi`
+    const target = b.resolveTargetQuery(.{
+        .cpu_arch = .wasm32,
+        .os_tag = .wasi,
+        .abi = .none, // WebAssembly doesn't have a traditional ABI
+    });
 
-    const target = b.standardTargetOptions(.{});
-    const optimize = b.standardOptimizeOption(.{});
-
+    const optimize = b.standardOptimizeOption(.{
+        .preferred_mode = .ReleaseSmall,
+    });
 
     const mod = b.addModule("chip_zig", .{
         .root_source_file = b.path("chip.zig"),
         .target = target,
         .optimize = optimize,
-
     });
-    //mod.install();
+
+    mod.install();
     //lib.setTarget(target);
     //lib.setBuildMode(mode);
     //lib.addPackagePath("wokwi", "wokwi/wokwi_chip_ll.zig");
